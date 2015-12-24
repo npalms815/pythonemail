@@ -1,0 +1,38 @@
+import smtplib
+import time
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+
+server = smtplib.SMTP('smtp.gmail.com', 587)
+
+server.ehlo()
+server.starttls()
+server.ehlo()
+
+server.login("nfpthree@gmail.com", "hfkhhtowhuqrhtga")
+
+for x in range(25,148):
+    # Setup subject and recipients
+    recipients = ['rpidelts@googlegroups.com']
+    msg = MIMEMultipart()
+    msg['From']= "nfpthree@gmail.com"
+    msg['To'] = ", ".join(recipients)
+    msg['Subject'] = 'HAHAHAHAHA IT WAS ACTUALLY A TEST'
+
+    #image setup
+    msgAlternative = MIMEMultipart('alternative')
+    msg.attach(msgAlternative)
+
+    msgText = MIMEText("Alternative text message")
+    msgAlternative.attach(msgText)
+
+    msgText = MIMEText('Fuck you mole <br><img src="cid:image1"><br>', 'html')
+    msgAlternative.attach(msgText)
+
+    fp = open('spidey'+str(x)+'.jpg','rb')
+    msgImage = MIMEImage(fp.read(), _subtype="png")
+    fp.close()
+
+    msgImage.add_header('Content-ID', '<image1>')
+    msg.attach(msgImage)
